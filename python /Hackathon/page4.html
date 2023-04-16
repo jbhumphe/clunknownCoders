@@ -1,0 +1,51 @@
+<html>
+<head>
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script>
+      
+        function showslider() {
+        var slider = document.getElementById("myRange");
+    $.ajax({
+        url: 'http://localhost:81/calc_payments',
+        method: 'POST',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ 
+            "loan_amt": 30000, 
+            "interest_rate": 6.5,
+            "monthly_payment": 200,
+            "addl_amt": slider.value
+        }),
+        success: function(response) {
+            loan_amt = response.loan_amt
+            document.getElementById("loan_amt").innerHTML = loan_amt
+            num_of_payments = response.num_of_payments
+            document.getElementById("num_of_payments").innerHTML = num_of_payments
+            mod_time = response.mod_time
+            document.getElementById("addl_amt").innerHTML = slider.value
+            document.getElementById("mod_time").innerHTML = mod_time
+        },
+        error:function() {
+            alert("error");
+        }
+    });
+    
+}  
+    </script>
+</head>
+<body>
+<div class="slidecontainer">
+    <img src ="img/Fedah_logo.png" width = "250px">
+    <p>Additional amount: <span id="addl_amt"></span></p>
+    <br>
+    <input type="range" min="0" max="500" value="250" class="slider" id="myRange" onchange="showslider()">
+   
+  <p>Total balance: <span id="loan_amt"></span></p>
+  
+  <p>Original number of payments: <span id = "num_of_payments"></span></p>
+  <p>New number of payments: <span id="mod_time"></span></p>
+</div>
+<script>showslider();</script>
+</body>
+</html>
